@@ -1,17 +1,21 @@
-package charMaker;
 
-import java.lang.reflect.Array;
+/* Version -9999.9 :P
+ * Faith Matthew
+ */
+
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class RPGCharacterMaker {
 
 	int pStrength;
-	int pDex;
+	int pDexterity;
 	int pWisdom;
 	int pIntellect;
 	int pCharisma;
 	int pConstitution;
+	
+	String pClass;
 
 	private static int[] stats = new int[6];
 	private static int[] stat = new int[4];
@@ -27,10 +31,21 @@ public class RPGCharacterMaker {
 		Scanner sc = new Scanner(System.in);
 		String chosenClass = sc.next();
 	}
+	
+	private static void listStats(RPGCharacterMaker obj){
+			System.out.println("Charisma: " +obj.pCharisma); 
+			System.out.println("Strength: " +obj.pStrength); System.out.println("Dex: " +obj.pDexterity);
+			System.out.println("Wisdom: " +obj.pWisdom); 
+			System.out.println("Constitution: " +obj.pConstitution); 
+			System.out.println("Intellect: " +obj.pIntellect);
+		
+	}
 
 	private static void assignRace(RPGCharacterMaker obj) {
+		
+		RPGCharacterMaker player = obj;
 
-		HashMap<String, String> races = new HashMap<>();
+		 HashMap<String, String> races = new HashMap<>();
 
 		races.put("Aarakocra",
 				"Sequestered in high mountains atop tall"
@@ -49,6 +64,72 @@ public class RPGCharacterMaker {
 		// races.put(arg0, arg1)
 
 		System.out.println(races.keySet());
+		
+		System.out.println("Please select one of the races above ");
+		
+		Scanner sc= new Scanner(System.in);
+		
+		String chosenRace = sc.next();
+		
+	
+		
+		if(!chosenRace.isEmpty())
+			System.out.println(races.get(chosenRace));
+			System.out.println("\n Look at another class? Yes | No");
+			String cont = sc.next();
+				if(cont.equalsIgnoreCase("Yes")){
+					assignRace(player);
+				}
+				
+				if(cont.equalsIgnoreCase("no")){
+					System.out.println("\n Select this class? [" + chosenRace+"]");
+						String selectClass = sc.next();
+						
+						if(selectClass.equalsIgnoreCase("yes")){
+							player.pClass=chosenRace;
+							System.out.println("\n [" + chosenRace + "] has been selected as your class");
+							raceStatModification(player);
+						
+						}
+						
+						if(selectClass.equalsIgnoreCase("no")){
+							assignRace(player);
+						}
+				}
+					
+					
+	}
+
+	private static void raceStatModification(RPGCharacterMaker player) {
+		
+		System.out.println("\n Your previous stats were... ");
+		listStats(player);
+		
+		switch(player.pClass.toLowerCase()){
+		
+		case "centaur":
+				player.pStrength+=2;
+				player.pWisdom+=1;
+				break;
+		
+		
+		case "bugbear":
+				player.pStrength += 2;
+				player.pDexterity +=1;
+				break;
+			
+		case "aarakocra":
+				player.pDexterity+=2;
+				player.pWisdom+=1;
+				break;
+		
+		case "aasimar": 
+				player.pCharisma+=2;
+				break;
+		}
+		
+		System.out.println("\n Your new stats are... ");
+		listStats(player);
 	}
 
 	private static void assignStats(int arr[], RPGCharacterMaker obj) {
@@ -78,7 +159,7 @@ public class RPGCharacterMaker {
 				obj.pStrength = stats[i];
 				break;
 			case "dex":
-				obj.pDex = stats[i];
+				obj.pDexterity = stats[i];
 				break;
 			case "wisdom":
 				obj.pWisdom = stats[i];
@@ -119,21 +200,16 @@ public class RPGCharacterMaker {
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
 		RPGCharacterMaker you = new RPGCharacterMaker();
-		// rollStats();
-		// assignStats(stats, you);
+		rollStats();
+		 assignStats(stats, you);
 
-		/*
-		 * System.out.println("Charisma: " +you.pCharisma); System.out.println(
-		 * "Strength: " +you.pStrength); System.out.println("Dex: " +you.pDex);
-		 * System.out.println("Wisdom: " +you.pWisdom); System.out.println(
-		 * "Constitution: " +you.pConstitution); System.out.println(
-		 * "Intellect: " +you.pIntellect);
-		 */
+		
 
 		// assignClass();
 		assignRace(you);
+		System.out.println(you.pClass);
 
 	}
 }
